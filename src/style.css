@@ -22,6 +22,9 @@ body {
 #layer2,
 #layer3,
 #layer4,
-#layer5 {
+#layer5,
+#enemyFly,
+#enemyPlant,
+#enemySpider {
   display: none;
 }
