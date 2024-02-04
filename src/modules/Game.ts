@@ -1,7 +1,7 @@
 import {Background} from './Background'
 import {InputHandler} from './InputHandler'
 import {Player} from './Player'
-import {Enemy, FlyingEnemy} from "./Enemies.ts";
+import {ClimbingEnemy, Enemy, FlyingEnemy, GroundEnemy} from "./Enemies.ts";
 
 export class Game {
   public width
@@ -35,6 +35,9 @@ export class Game {
     this.player.update(this.input.keys, deltaTime)
     this.enemies.forEach(enemy => {
       enemy.update(deltaTime)
+      if (enemy.markForDeletion) {
+        this.enemies.splice(this.enemies.indexOf(enemy), 1)
+      }
     })
 
     // handleEnemies
@@ -56,8 +59,12 @@ export class Game {
   }
 
   addEnemy() {
-    this.enemies.push(new FlyingEnemy(this))
-
-    console.log(this.enemies)
+    if (this.speed > 0 && Math.random() > 0.5) {
+      this.enemies.push(new GroundEnemy(this))
+    } else if (this.speed > 0) {
+      this.enemies.push(new ClimbingEnemy(this))
+    }
+    const flyingEnemy = new FlyingEnemy(this)
+    this.enemies.push(flyingEnemy)
   }
 }
