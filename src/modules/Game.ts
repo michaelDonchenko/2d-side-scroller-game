@@ -4,6 +4,7 @@ import {Player} from './Player'
 import {ClimbingEnemy, ExtendedEnemy, FlyingEnemy, GroundEnemy} from './Enemies.ts'
 import {UI} from './UI.ts'
 import {ExtendedParticle} from './Particle.ts'
+import {CollisionAnimation} from './collisionAnimation.ts'
 
 export class Game {
   public width
@@ -16,13 +17,13 @@ export class Game {
   public maxSpeed
   public enemies: ExtendedEnemy[]
   public particles: ExtendedParticle[]
+  public collisions: CollisionAnimation[]
   public enemyTimer
   public enemyInterval
   public debug
   public score
   public fontColor
   public ui
-  public maxParticles
 
   constructor(width: number, height: number) {
     this.width = width
@@ -36,13 +37,13 @@ export class Game {
     this.maxSpeed = 3
     this.enemies = []
     this.particles = []
+    this.collisions = []
     this.enemyTimer = 0
     this.enemyInterval = 1000
     this.debug = false
     this.score = 0
     this.fontColor = 'black'
     this.player.currentState.enter()
-    this.maxParticles = 100
   }
 
   update(deltaTime: number) {
@@ -72,11 +73,13 @@ export class Game {
       }
     })
 
-    if (this.particles.length > this.maxParticles) {
-      this.particles = this.particles.slice(0, this.maxParticles)
-    }
-
-    console.log(this.particles)
+    // handle collision sprites
+    this.collisions.forEach((collision, index) => {
+      collision.update(deltaTime)
+      if (collision.markForDeletion) {
+        this.collisions.splice(index, 1)
+      }
+    })
   }
 
   draw(context: CanvasRenderingContext2D | null) {
@@ -89,6 +92,10 @@ export class Game {
 
     this.particles.forEach((particle) => {
       particle.draw(context, particle)
+    })
+
+    this.collisions.forEach((collision) => {
+      collision.draw(context)
     })
 
     this.ui.draw(context)

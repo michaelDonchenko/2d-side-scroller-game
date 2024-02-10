@@ -1,5 +1,6 @@
 import {Game} from './Game'
-import {ExtendedState, Falling, Jumping, Rolling, Running, Sitting} from './PlayerState'
+import {ExtendedState, Falling, Hit, Jumping, Rolling, Running, Sitting} from './PlayerState'
+import {CollisionAnimation} from './collisionAnimation'
 
 export class Player {
   public game: Game
@@ -44,6 +45,7 @@ export class Player {
       new Jumping(this.game),
       new Falling(this.game),
       new Rolling(this.game),
+      new Hit(this.game),
     ]
     this.currentState = this.states[0]
   }
@@ -128,8 +130,15 @@ export class Player {
         enemy.y + enemy.height > this.y
       ) {
         enemy.markForDeletion = true
-        this.game.score++
-      } else {
+        this.game.collisions.push(
+          new CollisionAnimation(this.game, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5)
+        )
+
+        if (this.currentState === this.states[4]) {
+          this.game.score++
+        } else {
+          this.setState(5, 0)
+        }
       }
     })
   }

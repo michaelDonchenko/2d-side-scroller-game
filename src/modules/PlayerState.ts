@@ -7,8 +7,7 @@ const state = {
   jumping: 2,
   falling: 3,
   rolling: 4,
-  diving: 5,
-  hit: 6,
+  hit: 5,
 } as const
 
 export class State {
@@ -154,6 +153,29 @@ export class Rolling extends State {
       this.game.player.setState(state.falling, 1)
     } else if (input.includes('Enter') && input.includes('w') && this.game.player.onGround()) {
       this.game.player.vy -= 27
+    }
+  }
+}
+
+export class Hit extends State {
+  public game: Game
+
+  constructor(game: Game) {
+    super('hit')
+    this.game = game
+  }
+
+  enter() {
+    this.game.player.frameX = 0
+    this.game.player.maxFrame = 10
+    this.game.player.frameY = 4
+  }
+
+  handleInput(input: string[]) {
+    if (this.game.player.frameX >= 10 && this.game.player.onGround()) {
+      this.game.player.setState(state.running, 1)
+    } else if (this.game.player.frameX >= 10 && !this.game.player.onGround()) {
+      this.game.player.setState(state.falling, 1)
     }
   }
 }

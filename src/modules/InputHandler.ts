@@ -9,6 +9,10 @@ export class InputHandler {
     this.game = game
 
     window.addEventListener('keydown', (event) => {
+      if (this.game.player.currentState === this.game.player.states[5]) {
+        return
+      }
+
       if (
         (event.key === 'w' || event.key === 's' || event.key === 'a' || event.key === 'd' || event.key === 'Enter') &&
         this.keys.indexOf(event.key) === -1
