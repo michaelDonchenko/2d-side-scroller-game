@@ -171,7 +171,7 @@ export class Hit extends State {
     this.game.player.frameY = 4
   }
 
-  handleInput(input: string[]) {
+  handleInput() {
     if (this.game.player.frameX >= 10 && this.game.player.onGround()) {
       this.game.player.setState(state.running, 1)
     } else if (this.game.player.frameX >= 10 && !this.game.player.onGround()) {
