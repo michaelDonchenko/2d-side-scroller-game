@@ -1,7 +1,12 @@
+import {Game} from './Game'
+
 export class InputHandler {
   public keys: string[]
-  constructor() {
+  public game: Game
+
+  constructor(game: Game) {
     this.keys = []
+    this.game = game
 
     window.addEventListener('keydown', (event) => {
       if (
@@ -9,6 +14,8 @@ export class InputHandler {
         this.keys.indexOf(event.key) === -1
       ) {
         this.keys.push(event.key)
+      } else if (event.key === 'e') {
+        this.game.debug = !this.game.debug
       }
     })
 

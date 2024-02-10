@@ -1,5 +1,5 @@
 import {Game} from './Game'
-import {ExtendedState, Falling, Jumping, Running, Sitting} from './PlayerState'
+import {ExtendedState, Falling, Jumping, Rolling, Running, Sitting} from './PlayerState'
 
 export class Player {
   public game: Game
@@ -38,12 +38,18 @@ export class Player {
     this.maxSpeed = 10
     this.vy = 0
     this.weight = 1
-    this.states = [new Sitting(this), new Running(this), new Jumping(this), new Falling(this)]
+    this.states = [
+      new Sitting(this.game),
+      new Running(this.game),
+      new Jumping(this.game),
+      new Falling(this.game),
+      new Rolling(this.game),
+    ]
     this.currentState = this.states[0]
-    this.currentState.enter()
   }
 
   update(input: string[], deltaTime: number) {
+    this.checkCollisions()
     this.currentState.handleInput(input)
     // horizontal movement
     this.x += this.speed
@@ -85,6 +91,10 @@ export class Player {
     if (!context) {
       return
     }
+    if (this.game.debug) {
+      context.strokeRect(this.x, this.y, this.width, this.height)
+    }
+
     context.drawImage(
       this.image,
       this.frameX * this.width,
@@ -106,5 +116,21 @@ export class Player {
     this.currentState = this.states[state]
     this.game.speed = speed * this.game.maxSpeed
     this.currentState.enter()
+  }
+
+  checkCollisions() {
+    this.game.enemies.forEach((enemy) => {
+      if (
+        // collision detected when all 4 conditions are true
+        enemy.x < this.x + this.width &&
+        enemy.x + enemy.width > this.x &&
+        enemy.y < this.y + this.height &&
+        enemy.y + enemy.height > this.y
+      ) {
+        enemy.markForDeletion = true
+        this.game.score++
+      } else {
+      }
+    })
   }
 }
