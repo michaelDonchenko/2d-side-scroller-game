@@ -48,7 +48,7 @@ export class Game {
     this.fontColor = 'black'
     this.player.currentState.enter()
     this.time = 0
-    this.maxTime = 10000
+    this.maxTime = 60000
     this.gameOver = false
   }
 

@@ -31,7 +31,7 @@ export class UI {
     if (this.game.gameOver) {
       context.textAlign = 'center'
       context.font = this.fontSize * 2 + 'px ' + this.fontFamily
-      if (this.game.score > 10) {
+      if (this.game.score > 100) {
         context.fillText('You won!', this.game.width * 0.5, this.game.height * 0.5 - 20)
         context.font = this.fontSize + 'px ' + this.fontFamily
         context.fillText(

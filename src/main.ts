@@ -5,7 +5,9 @@ window.addEventListener('load', () => {
   const audio = document.getElementById('music') as HTMLAudioElement
   audio.volume = 0
 
-  audio.play()
+  setTimeout(() => {
+    audio.play()
+  }, 1000)
 
   const ctx = canvas.getContext('2d')
 
