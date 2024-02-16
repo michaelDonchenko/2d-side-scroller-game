@@ -2,6 +2,10 @@ import {Game} from './modules/Game'
 
 window.addEventListener('load', () => {
   const canvas = document.getElementById('canvas') as HTMLCanvasElement
+  const audio = document.getElementById('music') as HTMLAudioElement
+  audio.volume = 0
+
+  audio.play()
 
   const ctx = canvas.getContext('2d')
 
@@ -18,7 +22,10 @@ window.addEventListener('load', () => {
     ctx?.clearRect(0, 0, canvas.width, canvas.height)
     game.update(deltaTime)
     game.draw(ctx)
-    requestAnimationFrame(animate)
+
+    if (!game.gameOver) {
+      requestAnimationFrame(animate)
+    }
   }
 
   animate(0)

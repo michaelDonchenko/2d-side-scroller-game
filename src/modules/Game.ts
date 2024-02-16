@@ -24,6 +24,9 @@ export class Game {
   public score
   public fontColor
   public ui
+  public time
+  public maxTime
+  public gameOver
 
   constructor(width: number, height: number) {
     this.width = width
@@ -44,9 +47,17 @@ export class Game {
     this.score = 0
     this.fontColor = 'black'
     this.player.currentState.enter()
+    this.time = 0
+    this.maxTime = 10000
+    this.gameOver = false
   }
 
   update(deltaTime: number) {
+    if (this.time > this.maxTime) {
+      this.gameOver = true
+    }
+
+    this.time += deltaTime
     this.background.update()
     this.player.update(this.input.keys, deltaTime)
     this.enemies.forEach((enemy) => {
