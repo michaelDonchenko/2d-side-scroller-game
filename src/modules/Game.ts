@@ -27,6 +27,7 @@ export class Game {
   public time
   public maxTime
   public gameOver
+  public maxParticles
 
   constructor(width: number, height: number) {
     this.width = width
@@ -50,6 +51,7 @@ export class Game {
     this.time = 0
     this.maxTime = 60000
     this.gameOver = false
+    this.maxParticles = 50
   }
 
   update(deltaTime: number) {

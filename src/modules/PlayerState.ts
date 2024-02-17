@@ -60,7 +60,7 @@ export class Running extends State {
   }
 
   handleInput(input: string[]) {
-    this.game.particles.unshift(
+    this.game.particles.push(
       new Dust(this.game, this.game.player.x + this.game.player.width / 3, this.game.player.y + this.game.player.height)
     )
 
@@ -139,7 +139,7 @@ export class Rolling extends State {
   }
 
   handleInput(input: string[]) {
-    this.game.particles.unshift(
+    this.game.particles.push(
       new Fire(
         this.game,
         this.game.player.x + this.game.player.width * 0.5,
